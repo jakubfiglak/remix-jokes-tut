@@ -19,6 +19,11 @@ export async function login({ username, password }: LoginForm) {
   return user;
 }
 
+export async function register({ username, password }: LoginForm) {
+  const passwordHash = await bcrypt.hash(password, 10);
+  return db.user.create({ data: { username, passwordHash } });
+}
+
 let sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret) {
   throw new Error("SESSION_SECRET must be set");
